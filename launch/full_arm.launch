@@ -1,0 +1,20 @@
+<launch>
+
+	<arg name="joy_topic" default="/arm/joy"/>
+
+	<!-- The hockey_stick_joint node will take arm joint velocity commands and convert them to motor commands -->
+	<node name="hockey_stick_controller" pkg="hockey_stick_arm" type="hockey_stick_arm_node.py" output="screen">
+		<param name="arm_joy_cmd" value="$(arg joy_topic)"/>
+	</node>
+
+	<!-- The hockey_stick_ee_dif node will take arm cmd_vels and convert them to motor commands for the diff and ee and rail -->
+	<node name="hockey_stick_dif_ee_controller" pkg="hockey_stick_arm" type= "hockey_stick_ee_dif.py" output="screen">
+		<param name="arm_joy_cmd" value="$(arg joy_topic)"/>
+	</node>
+
+	<!-- We need to run myactuator_control to run the motors -->
+	<include file="$(find hockey_stick_arm)/launch/myactuator_arm.launch">
+		<arg name="output" value="screen"/>
+	</include>
+
+</launch>

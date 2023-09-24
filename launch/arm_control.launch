@@ -1,0 +1,10 @@
+<launch>
+
+	<arg name="joy_dev" default="/dev/input/js0"/>
+
+	<!-- The joy node will connect to a joystick -->
+	<node name="joy_node" pkg="joy" type="joy_node" ns="arm">
+		<param name="autorepeat_rate" value="30"/>
+		<param name="dev" value="$(arg joy_dev)"/>
+	</node>
+</launch>

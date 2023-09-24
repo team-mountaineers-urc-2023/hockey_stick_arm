@@ -1,0 +1,41 @@
+<launch>
+	<arg name="name" default="myactuator_arm"/>
+	<arg name="motor_cmd_topic" default="/arm/motor_cmd"/>
+	<arg name="motor_left_index" default="0"/>
+	<arg name="motor_right_index" default="1"/>
+	<arg name="ccw_fwd" default="True"/>
+	<arg name="timeout" default="0.1"/>
+	<arg name="message_period_ms" default="250"/>
+	<arg name="max_speed" default="10"/>
+	<arg name="output" default="screen"/>
+
+	<!-- Set motor IDs for each wheels motor -->
+	<arg name="motor_L_ID" value="0x145"/>		
+	<arg name="motor_R_ID" value="0x146"/>	
+	<arg name="motor_type" value="X10_S2_V3"/>
+
+	<arg name="motor_L_port" value="/dev/urc/mtc/arm_L"/>	
+	<arg name="motor_R_port" value="/dev/urc/mtc/arm_R"/>
+
+	<node pkg="hockey_stick_arm" name="$(arg name)"
+	type="myactuator_arm_motors.py" output="$(arg output)" respawn="false">
+		<param name="name" value="$(arg name)"/>
+		<param name="motor_cmd_topic" value="$(arg motor_cmd_topic)"/>
+		<param name="motor_left_index" value="$(arg motor_left_index)"/>
+		<param name="motor_right_index" value="$(arg motor_right_index)"/>
+		<param name="ccw_fwd" value="$(arg ccw_fwd)"/>
+		<param name="timeout" value="$(arg timeout)"/>
+		<param name="message_period_ms" value="$(arg message_period_ms)"/>
+		<rosparam file="$(find myactuator_control)/config/X10_S2_V3.yaml"/>
+		
+		<param name="max_speed" value="$(arg max_speed)"/>
+
+		<!-- Added modifiable CAN IDs and motor types -->		
+		<param name="motor_L_ID" value="$(arg motor_L_ID)"/>
+		<param name="motor_R_ID" value="$(arg motor_R_ID)"/>
+		<param name="motor_type" value="$(arg motor_type)"/>
+
+		<param name="motor_L_port" value="$(arg motor_L_port)"/>	
+		<param name="motor_R_port" value="$(arg motor_R_port)"/>
+	</node>
+</launch>
